@@ -11,7 +11,13 @@ var rootCmd = &cobra.Command{
 	Use:   "docker-credentials-sso-ecr-login",
 	Short: "docker-credentials-sso-ecr-login is a helper for Docker to use AWS SSO credentials",
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("This is a credential helper for Docker to use AWS SSO credentials.")
+		fmt.Println("Please use the `docker-credentials-sso-ecr-login` command with the appropriate subcommands.")
 	},
+}
+
+func SetVersionInfo(version, commit, date string) {
+	rootCmd.Version = fmt.Sprintf("%s (Built on %s from Git SHA %s)", version, date, commit)
 }
 
 func Execute() {

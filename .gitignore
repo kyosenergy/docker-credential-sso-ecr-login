@@ -22,6 +22,9 @@ docker-credential-sso-ecr-login
 go.work
 go.work.sum
 
+# Goreleaser dist
+dist/
+
 # env file
 .env
 

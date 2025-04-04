@@ -71,7 +71,7 @@ func ensureNoSSOLoginNeeded() error {
 
 	result, err := svc.GetCallerIdentity(input)
 	if errors.Is(err, credentials.ErrNoValidProvidersFoundInChain) {
-		return fmt.Errorf("no configuration found with profile %s", profile)
+		return fmt.Errorf("no configuration found for profile: %s", profile)
 	}
 
 	if err != nil {

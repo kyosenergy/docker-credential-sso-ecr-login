@@ -1,7 +1,6 @@
-name: goreleaser
+name: "Goreleaser"
 
 on:
-  pull_request:
   push:
     tags:
       - 'v*.*.*'  # runs on version tags like v1.2.3

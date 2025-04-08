@@ -11,7 +11,7 @@ func handleError(err error) {
 	if err != nil {
 		out := fmt.Sprintf("[%s] %s", HelperName, err)
 
-		log.Errorf(out)
+		log.Error(out)
 		fmt.Println(out)
 
 		os.Exit(1)

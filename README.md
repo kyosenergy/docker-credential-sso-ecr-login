@@ -2,6 +2,9 @@
 
 The AWS SSO ECR Docker Credential Helper is a credential helper for the Docker daemon that makes it easier to use [Amazon Elastic Container Registry](https://aws.amazon.com/ecr/) with AWS SSO credentials.
 
+> [!NOTE]
+> This project is not affiliated with Amazon Web Services, but it is heavily inspired by [Amazon ECR Docker Credential Helper](https://github.com/awslabs/amazon-ecr-credential-helper)
+
 ## Table of Contents
   * [Prerequisites](#prerequisites)
   * [Installing](#installing)
@@ -70,7 +73,7 @@ If you haven't defined the PATH, the command below will fail silently, and runni
 
 You can install this via the `go` command line tool.
 
-To install clone the repository and run:
+To install, clone this repository and run:
 
 ```
 git clone git@github.com:kyosenergy/docker-credential-sso-ecr-login.git
@@ -85,9 +88,9 @@ go install .
 There is no need to use `docker login` or `docker logout`.
 
 Place the `docker-credential-sso-ecr-login` binary on your `PATH`.
-On Windows, depending on whether the executable is ran in the User or System context, the corresponding `Path` user or system variable needs to be used.
+On Windows, depending on whether the executable is run in the User or System context, the corresponding `Path` user or system variable needs to be used.
 
-Following that the configuration for the docker client needs to be updated in `~/.docker/config.json` to use the **sso-ecr-login** helper.
+Following that, the configuration for the Docker client needs to be updated in `~/.docker/config.json` to use the **sso-ecr-login** helper.
 Depending on the operating system and context under which docker client will be executed, this configuration can be found in different places.
   
 On macOS and Linux systems:
@@ -103,14 +106,24 @@ Create a `credHelpers` section with the URI of your ECR registry:
 ```json
 {
 	"credHelpers": {
-		"<aws_account_id>.dkr.ecr.<region>.amazonaws.com": "ecr-login"
+		"<aws_account_id>.dkr.ecr.<region>.amazonaws.com": "sso-ecr-login"
 	}
 }
 ```
 
 ### AWS credentials
 
-The AWS SSO ECR Docker Credential Helper allows you to use AWS credentials retrieved from AWS SSO.
+The AWS SSO ECR Docker Credential Helper allows you to use AWS credentials retrieved from AWS SSO. For example:
+
+```ini
+[profile default]
+sso_start_url = https://mycompany.awsapps.com/start/#
+sso_region = us-west-1
+sso_account_id = 123456789012
+sso_role_name = ECRRole
+region = us-west-1
+output = json
+```
 
 ## Usage
 

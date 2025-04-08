@@ -31,9 +31,9 @@ macOS & Linux executables are available via [GitHub releases](https://github.com
 Then run the following commands to install the credential helper:
 ```bash
 tar -zxvf docker-credential-sso-ecr-login_darwin_arm64.tar.gz --exclude='./README.md'
-mv docker-credential-sso-ecr-login /usr/local/bin/.
-chmod +x /usr/local/bin/docker-credential-sso-ecr-login
 rm -f docker-credential-sso-ecr-login_darwin_arm64.tar.gz
+sudo mv docker-credential-sso-ecr-login /usr/local/bin/.
+sudo chmod +x /usr/local/bin/docker-credential-sso-ecr-login
 ```
 > Adjust the `docker-credential-sso-ecr-login_darwin_arm64.tar.gz` file name to match the downloaded file based on your system's architecture. The file name will be different if you are using an Intel Mac, or Linux
 
@@ -113,7 +113,9 @@ Create a `credHelpers` section with the URI of your ECR registry:
 
 ### AWS credentials
 
-The AWS SSO ECR Docker Credential Helper allows you to use AWS credentials retrieved from AWS SSO. For example:
+The AWS SSO ECR Docker Credential Helper allows you to use AWS credentials retrieved from AWS SSO. (`aws configure sso`)
+
+For example:
 
 ```ini
 [profile default]

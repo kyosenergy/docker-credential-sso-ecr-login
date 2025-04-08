@@ -19,6 +19,7 @@ archives:
   - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
     files:
       - README.md
+      - LICENSE
 
 checksum:
   name_template: "{{ .ProjectName }}_checksums.txt"
@@ -27,3 +28,30 @@ release:
   github:
     owner: kyosenergy
     name: docker-credential-sso-ecr-login
+
+brews:
+  - name: docker-credential-sso-ecr-login
+    repository:
+      owner: kyosenergy
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    commit_author:
+      name: kyosbot
+      email: tester@kyos.com
+    directory: Formula
+    description: "Automatically gets credentials for Amazon ECR on docker push/docker pull with support for AWS SSO"
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+    install: |
+      bin.install "docker-credential-sso-ecr-login"
+
+      chmod "+x", "#{bin}/docker-credential-sso-ecr-login"
+
+      if OS.mac?
+        ohai "We use `xattr` and `codesign` commands to make the binary executable"
+        ohai "and self-signed ensuring it runs correctly on macOS."
+  
+        system "/usr/bin/xattr", "-cr", "#{bin}/docker-credential-sso-ecr-login"
+        system "/usr/bin/codesign", "--force", "--deep", "--sign", "-", "#{bin}/docker-credential-sso-ecr-login"
+      end
+    test: |
+      docker-credential-sso-ecr-login --version"

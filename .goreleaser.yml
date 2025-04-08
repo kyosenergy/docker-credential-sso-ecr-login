@@ -10,10 +10,11 @@ builds:
     goarch:
       - amd64
       - arm64
-    goarm:
-      - 7
     env:
       - CGO_ENABLED=0
+    ignore:
+      - goos: windows
+        goarch: arm64
 
 archives:
   - name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
@@ -41,11 +42,7 @@ brews:
     directory: Formula
     description: "Automatically gets credentials for Amazon ECR on docker push/docker pull with support for AWS SSO"
     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
-    install: |
-      bin.install "docker-credential-sso-ecr-login"
-
-      chmod "+x", "#{bin}/docker-credential-sso-ecr-login"
-
+    post_install: |
       if OS.mac?
         ohai "We use `xattr` and `codesign` commands to make the binary executable"
         ohai "and self-signed, ensuring it runs correctly on macOS."

@@ -15,6 +15,7 @@ The AWS SSO ECR Docker Credential Helper is a credential helper for the Docker d
     + [Docker](#docker)
     + [AWS credentials](#aws-credentials)
   * [Usage](#usage)
+  * [License](#license)
 
 ## Prerequisites
 
@@ -137,3 +138,7 @@ For example:
 `AWS_PROFILE=myprofile docker pull 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-repository:my-tag`
 
 There is no need to use `docker login` or `docker logout`.
+
+### License
+
+The AWS SSO ECR Docker Credential Helper is licensed under the MIT License.

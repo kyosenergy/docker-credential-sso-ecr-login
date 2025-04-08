@@ -8,13 +8,15 @@ The AWS SSO ECR Docker Credential Helper is a credential helper for the Docker d
 ## Table of Contents
   * [Prerequisites](#prerequisites)
   * [Installing](#installing)
-    + [macOS & Linux](#macos--linux)
+    + [macOS](#macos)
+    + [Linux](#linux)
     + [Windows](#windows)
     + [From Source](#from-source)
   * [Configuration](#configuration)
     + [Docker](#docker)
     + [AWS credentials](#aws-credentials)
   * [Usage](#usage)
+  * [Troubleshooting](#troubleshooting)
   * [License](#license)
 
 ## Prerequisites
@@ -25,23 +27,25 @@ You also must have AWS credentials available. See the [AWS credentials section](
 
 ## Installing
 
-### macOS & Linux
+### macOS
 
-macOS & Linux executables are available via [GitHub releases](https://github.com/kyosenergy/docker-credential-sso-ecr-login/releases).
+A Homebrew formula is available in a custom tap.
 
-Then run the following commands to install the credential helper:
 ```bash
-tar -zxvf docker-credential-sso-ecr-login_darwin_arm64.tar.gz --exclude='./README.md'
-rm -f docker-credential-sso-ecr-login_darwin_arm64.tar.gz
-sudo mv docker-credential-sso-ecr-login /usr/local/bin/.
-sudo chmod +x /usr/local/bin/docker-credential-sso-ecr-login
+brew tap kyosenergy/tap
+brew install kyosenergy/tap/docker-credential-sso-ecr-login
 ```
-> Adjust the `docker-credential-sso-ecr-login_darwin_arm64.tar.gz` file name to match the downloaded file based on your system's architecture. The file name will be different if you are using an Intel Mac, or Linux
 
-If you are using macOS, you will need to disable Gatekeeper for the credential helper binary. This is because macOS will not allow you to run binaries that are not notarized/signed by Apple. You can do this by running the following command:
+Once you have installed the credential helper, see the [Configuration section](#configuration) for instructions on how to configure Docker to work with the helper.
+
+### Linux
+
+Linux executables are available via [GitHub releases](https://github.com/kyosenergy/docker-credential-sso-ecr-login/releases).
+
+Download the latest release, extract the binary, place it in your `PATH` (usually `/usr/local/bin`), and make it executable:
 
 ```bash
-xattr -dr com.apple.quarantine $(which docker-credential-sso-ecr-login)
+chmod +x /usr/local/bin/docker-credential-sso-ecr-login
 ```
 
 Once you have installed the credential helper, see the [Configuration section](#configuration) for instructions on how to configure Docker to work with the helper.
@@ -74,12 +78,10 @@ If you haven't defined the PATH, the command below will fail silently, and runni
 
 You can install this via the `go` command line tool.
 
-To install, clone this repository and run:
+To install, you can run:
 
 ```
-git clone git@github.com:kyosenergy/docker-credential-sso-ecr-login.git
-cd docker-credential-sso-ecr-login
-go install .
+go install github.com/kyosenergy/docker-credential-sso-ecr-login
 ```
 
 ## Configuration
@@ -114,7 +116,9 @@ Create a `credHelpers` section with the URI of your ECR registry:
 
 ### AWS credentials
 
-The AWS SSO ECR Docker Credential Helper allows you to use AWS credentials retrieved from AWS SSO. (`aws configure sso`)
+The AWS SSO ECR Docker Credential Helper allows you to use AWS credentials retrieved from AWS SSO.
+
+You can configure your AWS SSO via the `aws configure sso` command, which will create a profile in your AWS config file.
 
 For example:
 
@@ -123,22 +127,26 @@ For example:
 sso_start_url = https://mycompany.awsapps.com/start/#
 sso_region = us-west-1
 sso_account_id = 123456789012
-sso_role_name = ECRRole
+sso_role_name = MyAssumedRole
 region = us-west-1
 output = json
 ```
 
 ## Usage
 
-`docker pull 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-repository:my-tag`
+`docker pull 123456789012.dkr.ecr.us-west-1.amazonaws.com/my-repo:my-tag`
 
 If you have configured additional profiles for use with the AWS CLI, you can use those profiles by specifying the `AWS_PROFILE` environment variable when invoking `docker`.
 For example:
 
-`AWS_PROFILE=myprofile docker pull 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-repository:my-tag`
+`AWS_PROFILE=myprofile docker pull 123456789012.dkr.ecr.us-west-1.amazonaws.com/my-repo:my-tag`
 
 There is no need to use `docker login` or `docker logout`.
 
-### License
+## Troubleshooting
+
+Logs from the AWS SSO ECR Docker Credential Helper are stored in `~/.sso-ecr-login/logs`.
+
+## License
 
 The AWS SSO ECR Docker Credential Helper is licensed under the MIT License.

@@ -48,10 +48,10 @@ brews:
 
       if OS.mac?
         ohai "We use `xattr` and `codesign` commands to make the binary executable"
-        ohai "and self-signed ensuring it runs correctly on macOS."
+        ohai "and self-signed, ensuring it runs correctly on macOS."
   
         system "/usr/bin/xattr", "-cr", "#{bin}/docker-credential-sso-ecr-login"
         system "/usr/bin/codesign", "--force", "--deep", "--sign", "-", "#{bin}/docker-credential-sso-ecr-login"
       end
     test: |
-      docker-credential-sso-ecr-login --version"
+      "docker-credential-sso-ecr-login --version"
